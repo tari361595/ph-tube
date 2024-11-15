@@ -71,8 +71,8 @@ const displayVideos = (videos) => {
 
         console.log(video);
         const card = document.createElement('div')
-    card.classList = "card card-compact";
-    card.innerHTML = ` 
+        card.classList = "card card-compact";
+        card.innerHTML = ` 
     <figure class = "h-[200px]">
     <img
       src=${video.thumbnail}
@@ -86,7 +86,9 @@ const displayVideos = (videos) => {
   <h2 class = "font-bold">${video.title}</h2>
   <div class = "flex items-center gap-2">
    <p>${video.authors[0].profile_name}</p>
-   <img class="w-5" src = "https://img.icons8.com/?size=96&id=D9RtvkuOe31p&format=png"/>
+   ${video.authors[0].verified === true ? `<img class="w-5" src = "https://img.icons8.com/?size=96&id=D9RtvkuOe31p&format=png"/>` : " "
+   }
+   
   
   </div>
   <p></p>
@@ -97,10 +99,10 @@ const displayVideos = (videos) => {
 
 
     `;
-    videosContainer.append(card);
+        videosContainer.append(card);
 
     })
-    
+
 
 }
 
