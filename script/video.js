@@ -8,6 +8,12 @@ function getTimeString(time) {
     remaingSecond = remaingSecond % 60;
     return `${hour}hour${minute}minute ${remaingSecond}ago`;
 }
+const removeActiveClass =()=>{
+    const buttons = document.getElementsByClassName('category-btn')
+    for(let btn of buttons){
+        btn.classList.remove('active')
+    }
+}
 
 
 const loadCategories = () => {
@@ -21,7 +27,16 @@ const loadCategoryVideos = (id) => {
     // alert(id);
     fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
         .then((res) => res.json())
-        .then((data) => displayVideos(data.category))
+        .then((data) => {
+            // sobaike active button remove korte hbe
+            removeActiveClass();
+
+            // sobaik active button add korte hbe
+            const activeBtn = document.getElementById(`btn-${id}`)
+            activeBtn.classList.add("active");
+            displayVideos(data.category);
+        }
+        )
         .catch((error) => console.error("Error loading categories:", error));
 }
 
@@ -40,7 +55,8 @@ const displayCategories = (categories) => {
         // Create a button
         const buttonContainer = document.createElement('div');
         buttonContainer.innerHTML =
-            `<button onclick="loadCategoryVideos(${item.category_id})" class ="btn">
+            `<button id="btn-${item.category_id}" onclick="loadCategoryVideos(${item.category_id})"
+             class ="btn category-btn">
         ${item.category}
         </button>
         `
@@ -60,6 +76,7 @@ const loadVideos = () => {
         .catch((error) => console.error("Error loading categories:", error));
 };
 loadVideos();
+
 
 
 // const cardDemo= {
@@ -85,6 +102,23 @@ const displayVideos = (videos) => {
     // console.log(videos);
     const videosContainer = document.getElementById('videos')
     videosContainer.innerHTML = "";
+    if (videos.length === 0) {
+        videosContainer.classList.remove('grid')
+        videosContainer.innerHTML =
+            `
+        <div class="min-h-[300px] flex flex-col justify-center items-center
+        gap-5">
+        <img src ="assets/Icon.png" />
+        <h2 class ="text-center text-xl font-bold">
+        No content in this category
+        </h2>
+        </div>
+        `;
+        return;
+    }
+    else {
+        videosContainer.classList.add('grid');
+    }
     videos.forEach((video) => {
 
         console.log(video);
