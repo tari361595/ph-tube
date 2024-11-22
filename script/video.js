@@ -77,6 +77,28 @@ const loadVideos = () => {
 };
 loadVideos();
 
+const loadDetails = async (videoId) =>{
+    console.log(videoId);
+    const uri = `https://openapi.programming-hero.com/api/phero-tube/video/${videoId}`
+    const res = await fetch(uri);
+    const data = await res.json();
+    displayDetails(data.video);
+
+}
+const displayDetails=(video)=>{
+console.log(video);
+const detailContainer = document.getElementById('modalContent');
+detailContainer.innerHTML =
+`
+<img src="${video.thumbnail}"/>
+<p>
+${video.description}
+</p>
+`
+
+document.getElementById('showDataModal').onclick();
+}
+
 
 
 // const cardDemo= {
@@ -150,7 +172,7 @@ const displayVideos = (videos) => {
    
   
   </div>
-  <p></p>
+  <p><button onclick="loadDetails('${video.video_id}')" class= "btn btn-sm btn-error">Details</button></p>
  
   </div>
    
